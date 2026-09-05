@@ -79,8 +79,10 @@
 
   function start() {
     try {
-      CloudKit.configure({ containers: [{ containerIdentifier: cfg.container, apiTokenAuth: { apiToken: cfg.apiToken, persist: false }, environment: cfg.environment }] });
-      var db = CloudKit.getDefaultContainer().publicCloudDatabase;
+      var db;
+      if (window.SonomiseCK) { db = window.SonomiseCK.db(); }
+      else { CloudKit.configure({ containers: [{ containerIdentifier: cfg.container, apiTokenAuth: { apiToken: cfg.apiToken, persist: false }, environment: cfg.environment }] }); db = CloudKit.getDefaultContainer().publicCloudDatabase; }
+      if (!db) throw new Error('no db');
       owners = {};
       db.fetchRecords('app-config').then(function (res) {
         var rec = res.records && res.records[0];

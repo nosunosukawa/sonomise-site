@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#FFFDF8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1B140F" media="(prefers-color-scheme: dark)">
+<title>この店を教える | その店、吸える？</title>
+<meta name="description" content="名簿に無い吸える店を教えるフォーム。人数と証拠がそろうとアプリとサイトに載ります。">
+<link rel="canonical" href="https://nosunosukawa.github.io/sonomise-site/spot-new.html">
+<meta property="og:title" content="この店を教える | その店、吸える？">
+<meta property="og:description" content="名簿に無い吸える店を教えるフォーム。人数と証拠がそろうとアプリとサイトに載ります。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://nosunosukawa.github.io/sonomise-site/spot-new.html">
+
+<meta name="robots" content="noindex"><script src="https://nosunosukawa.github.io/sonomise-site/ck-config.js"></script><script src="https://nosunosukawa.github.io/sonomise-site/assets/ck-shared.js"></script><script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script><script src="https://nosunosukawa.github.io/sonomise-site/assets/spot-new.js" defer></script>
+<style>
+  :root{
+    color-scheme:light dark;
+    --paper:#FFFDF8; --sheet:#FFFFFF;
+    --ink:#3E2A1E; --ink-mut:#6B584A;
+    --brown:#5C3B26; --brown-soft:#F3EBE3;
+    --rule:#E3D9CC; --line-strong:#A28B76;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#1B140F; --sheet:#241C15;
+      --ink:#F2E9E0; --ink-mut:#C7B8A9;
+      --brown:#D9B48F; --brown-soft:#2C2118;
+      --rule:#3B2F25; --line-strong:#8A7462;
+    }
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important;scroll-behavior:auto !important}
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%;scroll-padding-top:24px}
+  body{touch-action:manipulation;-webkit-tap-highlight-color:rgba(92,59,38,.15);
+    background:var(--paper);color:var(--ink);
+    font-family:"Hiragino Sans","ヒラギノ角ゴシック","Hiragino Kaku Gothic ProN",
+                "Yu Gothic","YuGothic","Noto Sans JP",-apple-system,sans-serif;
+    font-size:17px;line-height:1.9;-webkit-font-smoothing:antialiased;
+    overflow-wrap:break-word}
+  .wrap{max-width:640px;margin:0 auto;padding:0 16px 72px}
+
+  a{color:var(--brown);font-weight:700;
+    text-decoration:underline;text-decoration-color:currentColor;text-underline-offset:4px}
+  a:hover{text-decoration-thickness:2px}
+  :focus-visible{outline:3px solid var(--brown);outline-offset:3px;border-radius:4px}
+
+  .head{border-bottom:1px solid var(--rule)}
+  .head-in{max-width:640px;margin:0 auto;padding:0 16px;
+    display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0 20px}
+  .head-name{font-size:19px;font-weight:800;line-height:1.4}
+  .head-name a{display:inline-flex;align-items:center;min-height:48px}
+  .head-links{display:flex;gap:18px}
+  .head-links a{display:inline-flex;align-items:center;min-height:48px;font-size:17px}
+
+  header{margin:36px 0 22px}
+  h1{font-size:28px;text-wrap:balance;line-height:1.4;font-weight:800}
+  .lead{margin-top:14px;font-size:19px;line-height:1.8;font-weight:600}
+  .date{margin-top:10px;font-size:17px;color:var(--ink-mut)}
+  .card{background:var(--sheet);border:1px solid var(--line-strong);border-radius:14px;padding:20px}
+  .card + .card{margin-top:14px}
+  .card h2{font-size:22px;line-height:1.6;margin-bottom:6px;font-weight:800}
+  .card p + p{margin-top:12px}
+  .card ul{padding-left:1.3em;margin-top:12px}
+  .card li{margin-top:8px}
+  .card li::marker{color:var(--brown)}
+  .mailbtn{display:flex;align-items:center;justify-content:center;text-align:center;
+    min-height:60px;margin-top:12px;padding:12px 14px;font-size:19px;font-weight:800;
+    overflow-wrap:anywhere;color:var(--brown);background:var(--brown-soft);
+    border:2px solid var(--brown);border-radius:12px;text-underline-offset:4px}
+  footer{margin-top:56px;padding-top:12px;border-top:1px solid var(--rule);
+    text-align:center;color:var(--ink-mut);line-height:2}
+  footer a{display:inline-flex;align-items:center;min-height:48px;padding:0 4px}
+  section[id],h2[id]{scroll-margin-top:24px}
+
+  .badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:15px;font-weight:700;background:var(--brown-soft);color:var(--brown);border:1px solid var(--brown)}
+  .badge.muted{background:transparent;color:var(--ink-mut);border-color:var(--rule)}
+  .btns{display:grid;gap:10px;margin-top:14px}
+  .btn{display:flex;align-items:center;justify-content:center;min-height:56px;padding:10px 14px;border-radius:12px;font-size:18px;font-weight:800;text-decoration:none;border:2px solid var(--brown)}
+  .btn-main{background:var(--brown);color:#fff}.btn-sub{background:var(--brown-soft);color:var(--brown)}
+  .kv{margin-top:12px;color:var(--ink-mut);font-size:16px}
+  .official{background:#EEF4EE;border:1px solid #C5D9C5;border-radius:12px;padding:14px 16px;margin-bottom:16px}
+  .official h2{font-size:18px}
+  @media (prefers-color-scheme: dark){ .official{background:#22301F;border-color:#3C5A3C} }
+  .photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-top:12px}
+  .photos img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px}
+  .comments{list-style:none;padding:0;margin-top:12px}.comments li{padding:8px 0;border-top:1px solid var(--rule)}
+  .cdate{color:var(--ink-mut);font-size:14px}
+  .note{margin-top:12px;font-size:15px;color:var(--ink-mut)}
+  .note.ok{color:#2F5A2F;font-weight:700}
+  .radios{display:grid;gap:6px;margin-top:12px}
+  .radio{display:flex;align-items:center;gap:10px;min-height:48px;padding:6px 12px;border:1px solid var(--rule);border-radius:12px;font-weight:700}
+  .radio input{width:22px;height:22px;margin:0;flex:none}
+  .ta,.tx{width:100%;margin-top:10px;padding:12px 14px;font:inherit;font-size:17px;color:var(--ink);background:var(--paper);border:2px solid var(--line-strong);border-radius:12px}
+  .ta{min-height:88px;resize:vertical}
+  #post form .btn{margin-top:12px;width:100%;cursor:pointer;font-family:inherit}
+  #post form .btn:disabled{opacity:.45;cursor:not-allowed}
+  #apple-sign-in-button,#apple-sign-out-button{margin-top:12px}
+  .community .row b::before{content:'✓ ';color:#4E7A4E}
+  .list .row{display:block;padding:12px 0;border-top:1px solid var(--rule);text-decoration:none;color:var(--ink)}
+  .list .row b{font-size:18px}.list .row span{display:block;color:var(--ink-mut);font-size:15px;font-weight:400}
+  .search{width:100%;min-height:52px;font-size:18px;padding:10px 14px;border:2px solid var(--line-strong);border-radius:12px;background:var(--sheet);color:var(--ink)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+  .chip{border:2px solid var(--brown);border-radius:999px;padding:6px 12px;background:var(--sheet);color:var(--brown);font-weight:700;font-size:15px;cursor:pointer}
+  .chip.on{background:var(--brown);color:#fff}
+  #map{width:100%;height:58vh;min-height:320px;border-radius:14px;border:1px solid var(--line-strong);margin:12px 0;overflow:hidden}
+  #map.small{height:260px;min-height:200px}
+  .callout{padding:8px 10px;max-width:240px;font-size:14px;line-height:1.5}
+  .callout-title{font-weight:800;font-size:15px}.callout-sub{color:#6B584A;font-size:13px}
+  .callout-link{display:inline-block;margin-top:6px;font-weight:700}
+</style>
+</head>
+<body>
+<div class="head"><div class="head-in">
+  <span class="head-name"><a href="https://nosunosukawa.github.io/sonomise-site/">その店、吸える？</a></span>
+  <nav class="head-links" aria-label="ページ"><a href="https://nosunosukawa.github.io/sonomise-site/shops/">店をさがす</a><a href="https://nosunosukawa.github.io/sonomise-site/owner.html">店主の方へ</a><a href="https://nosunosukawa.github.io/sonomise-site/support.html">サポート</a></nav>
+</div></div>
+<div class="wrap">
+
+  <header>
+    <h1>この店を教える</h1>
+    <p class="lead">名簿に無い「席で飲みながら吸える店」を見つけたら、教えてください。ほかの人の確認か出どころがそろうと、アプリとこのサイトに載ります。</p>
+  </header>
+  <div class="card" id="newspot" data-site="https://nosunosukawa.github.io/sonomise-site">
+    <h2 id="nsname">店</h2>
+    <p class="kv" id="nsaddr"></p>
+    <form id="nsform" novalidate>
+      <label for="nsn" style="display:block;font-weight:800;margin-top:12px">店名</label>
+      <input class="tx" id="nsn" maxlength="60" required>
+      <p style="font-weight:800;margin-top:14px">吸い方</p>
+      <div class="radios" id="nscat">
+        <label class="radio"><input type="radio" name="cat" value="smokingAllowedRoom" checked> 席で飲みながら吸える</label>
+        <label class="radio"><input type="radio" name="cat" value="heatedTobaccoRoom"> 加熱式のみ・飲みながら吸える</label>
+        <label class="radio"><input type="radio" name="cat" value="smokingRoomOnly"> 喫煙専用室だけ（席では吸えない）</label>
+      </div>
+      <p style="font-weight:800;margin-top:14px">出どころ（どちらか必須）</p>
+      <div class="radios">
+        <label class="radio"><input type="radio" name="src" value="onSite" checked> 店頭で見た（自分の目で確かめた）</label>
+        <label class="radio"><input type="radio" name="src" value="url"> 公式ページ・SNS の URL がある</label>
+      </div>
+      <input class="tx" id="nsurl" inputmode="url" placeholder="https://…（URL を選んだとき）" hidden>
+      <div id="apple-sign-in-button"></div>
+      <div id="apple-sign-out-button" hidden></div>
+      <button type="submit" class="btn btn-main" id="nssend" disabled style="margin-top:12px;width:100%;font-family:inherit">教える</button>
+      <p class="note" id="nsstatus" role="status"></p>
+      <p class="note">送ると<a href="https://nosunosukawa.github.io/sonomise-site/terms.html">利用規約</a>に同意したことになります。載るのは、別の人の確認か出どころがそろってからです（運営が確認した店はすぐ載ります）。</p>
+    </form>
+  </div>
+  <footer>
+    <a href="https://nosunosukawa.github.io/sonomise-site/">アプリについて</a>・<a href="https://nosunosukawa.github.io/sonomise-site/shops/">店をさがす</a>・<a href="https://nosunosukawa.github.io/sonomise-site/support.html">サポート</a>・<a href="https://nosunosukawa.github.io/sonomise-site/privacy.html">プライバシー</a>・<a href="https://nosunosukawa.github.io/sonomise-site/terms.html">利用規約</a><br>
+    <small>出どころ: 新潟市「喫煙可能室設置施設届出書 提出店舗一覧」（市の許諾を得て利用）。分煙区分は届出種別からの推定です。営業状況は店に直接ご確認ください。20歳未満の喫煙は法律で禁止されています。</small>
+  </footer>
+</div>
+</body>
+</html>

@@ -13,7 +13,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://nosunosukawa.github.io/sonomise-site/shops/">
 
-<script src="https://nosunosukawa.github.io/sonomise-site/mk-config.js"></script><script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js" crossorigin async data-callback="sonomiseMapKitLoaded" data-libraries="map,annotations,services"></script><script>window.sonomiseMapKitLoaded=function(){var s=document.createElement('script');s.src='https://nosunosukawa.github.io/sonomise-site/assets/map.js';document.body.appendChild(s);};</script>
+<script src="https://nosunosukawa.github.io/sonomise-site/ck-config.js"></script><script src="https://nosunosukawa.github.io/sonomise-site/assets/ck-shared.js"></script><script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script><script src="https://nosunosukawa.github.io/sonomise-site/assets/community-spots.js" defer></script><script src="https://nosunosukawa.github.io/sonomise-site/mk-config.js"></script><script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js" crossorigin async data-callback="sonomiseMapKitLoaded" data-libraries="map,annotations,services"></script><script>window.sonomiseMapKitLoaded=function(){var s=document.createElement('script');s.src='https://nosunosukawa.github.io/sonomise-site/assets/map.js';document.body.appendChild(s);};</script>
 <style>
   :root{
     color-scheme:light dark;
@@ -91,6 +91,16 @@
   .comments{list-style:none;padding:0;margin-top:12px}.comments li{padding:8px 0;border-top:1px solid var(--rule)}
   .cdate{color:var(--ink-mut);font-size:14px}
   .note{margin-top:12px;font-size:15px;color:var(--ink-mut)}
+  .note.ok{color:#2F5A2F;font-weight:700}
+  .radios{display:grid;gap:6px;margin-top:12px}
+  .radio{display:flex;align-items:center;gap:10px;min-height:48px;padding:6px 12px;border:1px solid var(--rule);border-radius:12px;font-weight:700}
+  .radio input{width:22px;height:22px;margin:0;flex:none}
+  .ta,.tx{width:100%;margin-top:10px;padding:12px 14px;font:inherit;font-size:17px;color:var(--ink);background:var(--paper);border:2px solid var(--line-strong);border-radius:12px}
+  .ta{min-height:88px;resize:vertical}
+  #post form .btn{margin-top:12px;width:100%;cursor:pointer;font-family:inherit}
+  #post form .btn:disabled{opacity:.45;cursor:not-allowed}
+  #apple-sign-in-button,#apple-sign-out-button{margin-top:12px}
+  .community .row b::before{content:'✓ ';color:#4E7A4E}
   .list .row{display:block;padding:12px 0;border-top:1px solid var(--rule);text-decoration:none;color:var(--ink)}
   .list .row b{font-size:18px}.list .row span{display:block;color:var(--ink-mut);font-size:15px;font-weight:400}
   .search{width:100%;min-height:52px;font-size:18px;padding:10px 14px;border:2px solid var(--line-strong);border-radius:12px;background:var(--sheet);color:var(--ink)}
@@ -1028,6 +1038,7 @@
 <a class="row" href="https://nosunosukawa.github.io/sonomise-site/shops/32546C95-6F7B-5276-ABA2-89A295CAFBEB.html" data-n="すなっく なか" data-a="新潟市西蒲区岩室温泉811-12" data-b="bar" data-w="西蒲区"><b>すなっく なか</b><span>新潟市西蒲区岩室温泉811-12 ・ お酒も出る店</span></a>
 <a class="row" href="https://nosunosukawa.github.io/sonomise-site/shops/6887D1A9-C858-594D-834E-20E75836521E.html" data-n="スナック えっちゃん" data-a="新潟市西蒲区巻甲2456-1" data-b="bar" data-w="西蒲区"><b>スナック えっちゃん</b><span>新潟市西蒲区巻甲2456-1 ・ お酒も出る店</span></a></div>
   <p class="note" id="count"></p>
+  <div class="card community" id="community-spots" data-site="https://nosunosukawa.github.io/sonomise-site"><h2>利用者が教えた店</h2><p class="note">読み込んでいます…</p></div>
   <script>
   (function(){var q=document.getElementById('q'),rows=[].slice.call(document.querySelectorAll('#list .row')),biz='',ward='';
   function norm(s){return (s||'').normalize('NFKC').toLowerCase();}

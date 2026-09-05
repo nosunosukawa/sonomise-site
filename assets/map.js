@@ -63,6 +63,19 @@
     };
   }
 
+  // [2026-09-05] 利用者が教えた店（community-spots.js が読んだ分）を緑のピンで足す。
+  var communityPins = [];
+  window.sonomiseAddCommunity = function (list) {
+    map.removeAnnotations(communityPins);
+    communityPins = (list || []).map(function (c) {
+      var a = new mapkit.MarkerAnnotation(new mapkit.Coordinate(c.lat, c.lon), { color: '#4E7A4E', glyphText: '✓', title: c.name, subtitle: c.ownerApproved ? '運営が確認して共有' : '利用者 ' + c.authorCount + '人が確認', data: { a: c.address || '', id: c.id } });
+      a.callout = calloutFor(function (d) { return SITE + '/spot.html?id=' + d.id; }, '店のページを見る');
+      return a;
+    });
+    if (communityPins.length) map.addAnnotations(communityPins);
+  };
+  if (window.__sonomiseCommunityQueue) { window.sonomiseAddCommunity(window.__sonomiseCommunityQueue); window.__sonomiseCommunityQueue = null; }
+
   // 一覧の絞り込みと同期（shops/index.html の apply() から呼ばれる）
   var candidates = [];
   window.sonomiseMapFilter = function (visibleIDs, query) {
@@ -84,8 +97,9 @@
         if (err || !data || !data.places) return;
         var near = data.places.filter(function (p) { return Math.abs(p.coordinate.latitude - NIIGATA.latitude) < 0.35 && Math.abs(p.coordinate.longitude - NIIGATA.longitude) < 0.45; }).slice(0, 5);
         candidates = near.map(function (p) {
-          var a = new mapkit.MarkerAnnotation(p.coordinate, { color: '#B49E85', glyphText: '?', title: p.name, subtitle: 'まだ載っていません', data: { a: p.formattedAddress || '' } });
-          a.callout = calloutFor(function () { return SITE + '/#app'; }, 'アプリで、この店を教える');
+          var a = new mapkit.MarkerAnnotation(p.coordinate, { color: '#B49E85', glyphText: '?', title: p.name, subtitle: 'まだ載っていません', data: { a: p.formattedAddress || '', lat: p.coordinate.latitude, lon: p.coordinate.longitude, n: p.name } });
+          // [2026-09-05] Web からも教えられる（Apple ID でサインイン → newSpot の申告。アプリと同じ人数・証拠のルールで載る）。
+          a.callout = calloutFor(function (d) { return SITE + '/spot-new.html?name=' + encodeURIComponent(d.n || '') + '&addr=' + encodeURIComponent(d.a || '') + '&lat=' + d.lat + '&lon=' + d.lon; }, 'この店を教える');
           return a;
         });
         if (candidates.length) { map.addAnnotations(candidates); map.showItems(candidates, { animate: true, padding: new mapkit.Padding(60, 20, 20, 20) }); }

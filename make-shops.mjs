@@ -41,6 +41,16 @@ const extra = `
   .comments{list-style:none;padding:0;margin-top:12px}.comments li{padding:8px 0;border-top:1px solid var(--rule)}
   .cdate{color:var(--ink-mut);font-size:14px}
   .note{margin-top:12px;font-size:15px;color:var(--ink-mut)}
+  .note.ok{color:#2F5A2F;font-weight:700}
+  .radios{display:grid;gap:6px;margin-top:12px}
+  .radio{display:flex;align-items:center;gap:10px;min-height:48px;padding:6px 12px;border:1px solid var(--rule);border-radius:12px;font-weight:700}
+  .radio input{width:22px;height:22px;margin:0;flex:none}
+  .ta,.tx{width:100%;margin-top:10px;padding:12px 14px;font:inherit;font-size:17px;color:var(--ink);background:var(--paper);border:2px solid var(--line-strong);border-radius:12px}
+  .ta{min-height:88px;resize:vertical}
+  #post form .btn{margin-top:12px;width:100%;cursor:pointer;font-family:inherit}
+  #post form .btn:disabled{opacity:.45;cursor:not-allowed}
+  #apple-sign-in-button,#apple-sign-out-button{margin-top:12px}
+  .community .row b::before{content:'✓ ';color:#4E7A4E}
   .list .row{display:block;padding:12px 0;border-top:1px solid var(--rule);text-decoration:none;color:var(--ink)}
   .list .row b{font-size:18px}.list .row span{display:block;color:var(--ink-mut);font-size:15px;font-weight:400}
   .search{width:100%;min-height:52px;font-size:18px;padding:10px 14px;border:2px solid var(--line-strong);border-radius:12px;background:var(--sheet);color:var(--ink)}
@@ -121,6 +131,7 @@ for (const s of spots) {
     </div>
   </div>
   <div class="card" id="community" data-spot-id="${id}" data-site="${SITE}" data-spot-name="${esc(s.name)}"><h2>行った人の声</h2><p class="note">読み込んでいます…</p></div>
+  <div class="card" id="post" data-spot-id="${id}" data-site="${SITE}"><h2>この店に行った？</h2><p class="note">投票フォームを読み込んでいます…</p></div>
   <div class="card" id="owner">
     <h2>この店の店主の方へ</h2>
     <p>営業時間・店からのひとこと・公式ページを、アプリとこのページに<strong>無料</strong>で載せられます。運営が店の代表電話に確認してから載せます。</p>
@@ -133,7 +144,7 @@ for (const s of spots) {
   </div>
   <p class="note">出どころ: ${esc(s.attribution)}（<a href="${esc(s.sourceURL)}">市の公表ページ</a>）</p>`;
   writeFileSync(`shops/${id}.html`, shell({ title, description, canonical, body, jsonld,
-    extraHead: `<script src="${SITE}/ck-config.js"></script><script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script><script src="${SITE}/assets/community.js" defer></script>${MAPKIT}` }));
+    extraHead: `<script src="${SITE}/ck-config.js"></script><script src="${SITE}/assets/ck-shared.js"></script><script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script><script src="${SITE}/assets/community.js" defer></script><script src="${SITE}/assets/post.js" defer></script>${MAPKIT}` }));
 }
 
 // 一覧
@@ -150,6 +161,7 @@ const listBody = `
   <div class="chips" id="ward"><button class="chip on" data-v="">全区</button>${wards.map(w => `<button class="chip" data-v="${esc(w)}">${esc(w)}</button>`).join('')}</div>
   <div class="list" id="list">${rows.map(r => `<a class="row" href="${SITE}/shops/${r.id}.html" data-n="${esc(r.name)}" data-a="${esc(r.address)}" data-b="${r.businessType}" data-w="${esc(r.ward)}"><b>${esc(r.name)}</b><span>${esc(r.address)} ・ ${esc(BUSINESS[r.businessType] || '')}</span></a>`).join('\n')}</div>
   <p class="note" id="count"></p>
+  <div class="card community" id="community-spots" data-site="${SITE}"><h2>利用者が教えた店</h2><p class="note">読み込んでいます…</p></div>
   <script>
   (function(){var q=document.getElementById('q'),rows=[].slice.call(document.querySelectorAll('#list .row')),biz='',ward='';
   function norm(s){return (s||'').normalize('NFKC').toLowerCase();}
@@ -158,10 +170,64 @@ const listBody = `
   ['biz','ward'].forEach(function(id){document.getElementById(id).addEventListener('click',function(e){var b=e.target.closest('.chip');if(!b)return;[].forEach.call(this.querySelectorAll('.chip'),function(c){c.classList.remove('on')});b.classList.add('on');if(id==='biz')biz=b.dataset.v;else ward=b.dataset.v;apply();});});
   apply();})();
   </script>`;
-writeFileSync('shops/index.html', shell({ title: '新潟市で席で飲みながら吸える店 907件 — 地図と一覧 | その店、吸える？', description: '新潟市に喫煙可能室の届出がある飲食店を地図と一覧で。店名・区・業態で探せます。名簿に無い店は Apple の地図から候補を出します。', canonical: `${SITE}/shops/`, body: listBody, extraHead: MAPKIT }));
+writeFileSync('shops/index.html', shell({ title: '新潟市で席で飲みながら吸える店 907件 — 地図と一覧 | その店、吸える？', description: '新潟市に喫煙可能室の届出がある飲食店を地図と一覧で。店名・区・業態で探せます。名簿に無い店は Apple の地図から候補を出します。', canonical: `${SITE}/shops/`, body: listBody,
+  extraHead: `<script src="${SITE}/ck-config.js"></script><script src="${SITE}/assets/ck-shared.js"></script><script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script><script src="${SITE}/assets/community-spots.js" defer></script>${MAPKIT}` }));
+
+// 動的ページ（利用者が教えた店・新しい店を教える）。中身は JS が CloudKit から組む。
+const spotBody = `
+  <header>
+    <h1 id="title">利用者が教えた店</h1>
+    <div class="badges" id="badges"></div>
+    <p class="lead" id="addr">読み込んでいます…</p>
+    <p class="kv" id="meta"></p>
+  </header>
+  <div class="card">
+    <h2>この店で吸えるか</h2>
+    <p id="how">アプリの利用者が「新しい店」として教え、人数と証拠がそろって載った店です（名簿の店ではありません）。行く前に店へご確認ください。</p>
+    <div id="map" class="small" data-site="${SITE}" aria-label="店の地図"></div>
+    <div class="btns" id="links"></div>
+  </div>
+  <div class="card" id="community" data-site="${SITE}"><h2>行った人の声</h2><p class="note">読み込んでいます…</p></div>
+  <div class="card" id="post" data-site="${SITE}"><h2>この店に行った？</h2><p class="note">投票フォームを読み込んでいます…</p></div>
+  <p class="note" id="notfound" hidden>この店はまだ載っていません（人数か証拠が足りないか、取り下げられました）。<a href="${SITE}/shops/">店をさがす</a>へ戻る。</p>`;
+writeFileSync('spot.html', shell({ title: '利用者が教えた店 | その店、吸える？', description: 'アプリの利用者が教え、人数と証拠がそろって載った店のページ。', canonical: `${SITE}/spot.html`, body: spotBody,
+  extraHead: `<meta name="robots" content="noindex"><script src="${SITE}/ck-config.js"></script><script src="${SITE}/assets/ck-shared.js"></script><script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script><script src="${SITE}/assets/community-spots.js" defer></script><script src="${SITE}/mk-config.js"></script><script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js" crossorigin async data-callback="sonomiseMapKitLoaded" data-libraries="map,annotations,services"></script><script>window.sonomiseMapKitLoaded=function(){window.__mapkitReady=true;if(window.__sonomiseSpotReady)window.__sonomiseSpotReady();};</script>` }));
+
+const newBody = `
+  <header>
+    <h1>この店を教える</h1>
+    <p class="lead">名簿に無い「席で飲みながら吸える店」を見つけたら、教えてください。ほかの人の確認か出どころがそろうと、アプリとこのサイトに載ります。</p>
+  </header>
+  <div class="card" id="newspot" data-site="${SITE}">
+    <h2 id="nsname">店</h2>
+    <p class="kv" id="nsaddr"></p>
+    <form id="nsform" novalidate>
+      <label for="nsn" style="display:block;font-weight:800;margin-top:12px">店名</label>
+      <input class="tx" id="nsn" maxlength="60" required>
+      <p style="font-weight:800;margin-top:14px">吸い方</p>
+      <div class="radios" id="nscat">
+        <label class="radio"><input type="radio" name="cat" value="smokingAllowedRoom" checked> 席で飲みながら吸える</label>
+        <label class="radio"><input type="radio" name="cat" value="heatedTobaccoRoom"> 加熱式のみ・飲みながら吸える</label>
+        <label class="radio"><input type="radio" name="cat" value="smokingRoomOnly"> 喫煙専用室だけ（席では吸えない）</label>
+      </div>
+      <p style="font-weight:800;margin-top:14px">出どころ（どちらか必須）</p>
+      <div class="radios">
+        <label class="radio"><input type="radio" name="src" value="onSite" checked> 店頭で見た（自分の目で確かめた）</label>
+        <label class="radio"><input type="radio" name="src" value="url"> 公式ページ・SNS の URL がある</label>
+      </div>
+      <input class="tx" id="nsurl" inputmode="url" placeholder="https://…（URL を選んだとき）" hidden>
+      <div id="apple-sign-in-button"></div>
+      <div id="apple-sign-out-button" hidden></div>
+      <button type="submit" class="btn btn-main" id="nssend" disabled style="margin-top:12px;width:100%;font-family:inherit">教える</button>
+      <p class="note" id="nsstatus" role="status"></p>
+      <p class="note">送ると<a href="${SITE}/terms.html">利用規約</a>に同意したことになります。載るのは、別の人の確認か出どころがそろってからです（運営が確認した店はすぐ載ります）。</p>
+    </form>
+  </div>`;
+writeFileSync('spot-new.html', shell({ title: 'この店を教える | その店、吸える？', description: '名簿に無い吸える店を教えるフォーム。人数と証拠がそろうとアプリとサイトに載ります。', canonical: `${SITE}/spot-new.html`, body: newBody,
+  extraHead: `<meta name="robots" content="noindex"><script src="${SITE}/ck-config.js"></script><script src="${SITE}/assets/ck-shared.js"></script><script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script><script src="${SITE}/assets/spot-new.js" defer></script>` }));
 
 // sitemap
-const urls = [`${SITE}/`, `${SITE}/shops/`, `${SITE}/support.html`, `${SITE}/privacy.html`, `${SITE}/terms.html`, ...rows.map(r => `${SITE}/shops/${r.id}.html`)];
+const urls = [`${SITE}/`, `${SITE}/shops/`, `${SITE}/owner.html`, `${SITE}/support.html`, `${SITE}/privacy.html`, `${SITE}/terms.html`, ...rows.map(r => `${SITE}/shops/${r.id}.html`)];
 writeFileSync('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u => `  <url><loc>${u}</loc></url>`).join('\n')}\n</urlset>\n`);
 if (!existsSync('robots.txt')) writeFileSync('robots.txt', `User-agent: *\nAllow: /\nSitemap: ${SITE}/sitemap.xml\n`);
 console.log('pages:', rows.length, 'wards:', wards.join(','));
