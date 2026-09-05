@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>その店、吸える？ — 投稿データの控え（運営用）</title>
+<link rel="canonical" href="https://nosunosukawa.github.io/sonomise-site/backup.html">
+<script src="ck-config.js"></script>
+<script src="assets/ck-shared.js"></script>
+<script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script>
+<style>
+  :root{
+    color-scheme:light dark;
+    --paper:#FFFDF8; --sheet:#FFFFFF;
+    --ink:#3E2A1E; --ink-mut:#6B584A;
+    --brown:#5C3B26; --brown-soft:#F3EBE3;
+    --rule:#E3D9CC; --line-strong:#A28B76;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#1B140F; --sheet:#241C15;
+      --ink:#F2E9E0; --ink-mut:#C7B8A9;
+      --brown:#D9B48F; --brown-soft:#2C2118;
+      --rule:#3B2F25; --line-strong:#8A7462;
+    }
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important;scroll-behavior:auto !important}
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%;scroll-padding-top:24px}
+  body{touch-action:manipulation;-webkit-tap-highlight-color:rgba(92,59,38,.15);
+    background:var(--paper);color:var(--ink);
+    font-family:"Hiragino Sans","ヒラギノ角ゴシック","Hiragino Kaku Gothic ProN",
+                "Yu Gothic","YuGothic","Noto Sans JP",-apple-system,sans-serif;
+    font-size:17px;line-height:1.9;-webkit-font-smoothing:antialiased;
+    overflow-wrap:break-word}
+  .wrap{max-width:640px;margin:0 auto;padding:0 16px 72px}
+
+  a{color:var(--brown);font-weight:700;
+    text-decoration:underline;text-decoration-color:currentColor;text-underline-offset:4px}
+  a:hover{text-decoration-thickness:2px}
+  :focus-visible{outline:3px solid var(--brown);outline-offset:3px;border-radius:4px}
+
+  .head{border-bottom:1px solid var(--rule)}
+  .head-in{max-width:640px;margin:0 auto;padding:0 16px;
+    display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0 20px}
+  .head-name{font-size:19px;font-weight:800;line-height:1.4}
+  .head-name a{display:inline-flex;align-items:center;min-height:48px}
+  .head-links{display:flex;gap:18px}
+  .head-links a{display:inline-flex;align-items:center;min-height:48px;font-size:17px}
+
+  header{margin:36px 0 22px}
+  h1{font-size:28px;text-wrap:balance;line-height:1.4;font-weight:800}
+  .lead{margin-top:14px;font-size:19px;line-height:1.8;font-weight:600}
+  .card{background:var(--sheet);border:1px solid var(--line-strong);border-radius:14px;padding:20px}
+  .card + .card{margin-top:14px}
+  .card h2{font-size:22px;line-height:1.6;margin-bottom:6px;font-weight:800}
+  .card h3{font-size:18px;line-height:1.6;margin:16px 0 4px;font-weight:800}
+  .card p + p{margin-top:12px}
+  .card ul,.card ol{padding-left:1.3em;margin-top:12px}
+  .card li{margin-top:8px}
+  .card li::marker{color:var(--brown)}
+  .mailbtn{display:flex;align-items:center;justify-content:center;text-align:center;
+    min-height:60px;margin-top:12px;padding:12px 14px;font-size:19px;font-weight:800;
+    overflow-wrap:anywhere;color:var(--brown);background:var(--brown-soft);
+    border:2px solid var(--brown);border-radius:12px;text-underline-offset:4px}
+  footer{margin-top:56px;padding-top:12px;border-top:1px solid var(--rule);
+    text-align:center;color:var(--ink-mut);line-height:2}
+  footer a{display:inline-flex;align-items:center;min-height:48px;padding:0 4px}
+  section[id],h2[id],div[id]{scroll-margin-top:24px}
+</style>
+<style>
+  .mailbtn{cursor:pointer;width:100%;font-family:inherit} .mailbtn:disabled{opacity:.45}
+  pre{white-space:pre-wrap;font-size:14px;color:var(--ink-mut);margin-top:12px}
+</style>
+</head>
+<body>
+<div class="head">
+  <div class="head-in">
+    <span class="head-name"><a href="index.html">その店、吸える？</a></span>
+    <nav class="head-links" aria-label="ほかのページ">
+      <a href="index.html">最初のページ</a>
+      <a href="privacy.html">プライバシー</a>
+    </nav>
+  </div>
+</div>
+<main class="wrap">
+<header>
+  <h1>投稿データの控え（運営用）</h1>
+  <p class="lead">アプリの投稿（Report・通報・店主の申請・設定）を CloudKit から全部読み、JSON で保存します。公開されている読み取り専用のデータなので、サインインは要りません。</p>
+</header>
+<section class="card">
+  <h2>控えを作る</h2>
+  <p>月に1回、または大きな変更の前に。ファイルは <code>sonomise-backup-日付.json</code> の名前で保存されます。</p>
+  <button class="mailbtn" id="run">全部読んで JSON を作る</button>
+  <a class="mailbtn" id="dl" hidden download>JSON を保存する</a>
+  <pre id="log"></pre>
+</section>
+</main>
+<script src="assets/backup.js" defer></script>
+</body>
+</html>
