@@ -164,6 +164,7 @@ const listBody = `
   <div class="list" id="list">${rows.map(r => `<a class="row" href="${SITE}/shops/${r.id}.html" data-n="${esc(r.name)}" data-a="${esc(r.address)}" data-b="${r.businessType}" data-w="${esc(r.ward)}"><b>${esc(r.name)}</b><span>${esc(r.address)} ・ ${esc(BUSINESS[r.businessType] || '')}</span></a>`).join('\n')}</div>
   <p class="note" id="count"></p>
   <div class="card community" id="community-spots" data-site="${SITE}"><h2>利用者が教えた店</h2><p class="note">読み込んでいます…</p></div>
+  <div class="card" id="recent" data-site="${SITE}"><h2>最近の投票</h2><p class="note">読み込んでいます…</p></div>
   <script>
   (function(){var q=document.getElementById('q'),rows=[].slice.call(document.querySelectorAll('#list .row')),biz='',ward='';
   function norm(s){return (s||'').normalize('NFKC').toLowerCase();}
@@ -174,7 +175,7 @@ const listBody = `
   apply();})();
   </script>`;
 writeFileSync('shops/index.html', shell({ title: '新潟市で席で飲みながら吸える店 907件 — 地図と一覧 | その店、吸える？', description: '新潟市に喫煙可能室の届出がある飲食店を地図と一覧で。店名・区・業態で探せます。名簿に無い店は Apple の地図から候補を出します。', canonical: `${SITE}/shops/`, body: listBody,
-  extraHead: `<script src="${SITE}/ck-config.js"></script><script src="${SITE}/assets/ck-shared.js"></script><script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script><script src="${SITE}/assets/community-spots.js" defer></script>${MAPKIT}` }));
+  extraHead: `<script src="${SITE}/ck-config.js"></script><script src="${SITE}/assets/ck-shared.js"></script><script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script><script src="${SITE}/assets/community-spots.js" defer></script><script src="${SITE}/assets/recent.js" defer></script>${MAPKIT}` }));
 
 // 動的ページ（利用者が教えた店・新しい店を教える）。中身は JS が CloudKit から組む。
 const spotBody = `
