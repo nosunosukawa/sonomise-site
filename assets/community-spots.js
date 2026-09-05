@@ -82,12 +82,13 @@
     listRoot.appendChild(el('p', 'note', '名簿に無い店で、別々の人の確認と出どころがそろったもの（または運営が確認したもの）。緑のピンで地図にも出ています。'));
     var box = el('div', 'list');
     list.sort(function (a, b) { return b.latest - a.latest; }).forEach(function (p) {
-      var a = el('a', 'row'); a.href = SITE + '/spot.html?id=' + p.id;
+      var a = el('a', 'row'); a.href = SITE + '/spot.html?id=' + p.id; a.dataset.n = p.name || ''; a.dataset.a = p.address || '';
       a.appendChild(el('b', null, p.name || '（店名なし）'));
       a.appendChild(el('span', null, (p.address ? p.address + ' ・ ' : '') + (CAT[p.category] || '') + ' ・ ' + (p.ownerApproved ? '運営が確認' : p.authorCount + '人が確認')));
       box.appendChild(a);
     });
     listRoot.appendChild(box);
+    if (window.sonomiseApplyFilter) window.sonomiseApplyFilter();
     if (window.sonomiseAddCommunity) window.sonomiseAddCommunity(list); else window.__sonomiseCommunityQueue = list;
   }
 

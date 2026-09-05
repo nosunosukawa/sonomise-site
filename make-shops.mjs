@@ -42,6 +42,7 @@ const extra = `
   .cdate{color:var(--ink-mut);font-size:14px}
   .note{margin-top:12px;font-size:15px;color:var(--ink-mut)}
   .note.ok{color:#2F5A2F;font-weight:700}
+  @media (prefers-color-scheme: dark){ .note.ok{color:#CFE6CF} .community .row b::before{color:#7FB37F} }
   .radios{display:grid;gap:6px;margin-top:12px}
   .radio{display:flex;align-items:center;gap:10px;min-height:48px;padding:6px 12px;border:1px solid var(--rule);border-radius:12px;font-weight:700}
   .radio input{width:22px;height:22px;margin:0;flex:none}
@@ -165,7 +166,8 @@ const listBody = `
   <script>
   (function(){var q=document.getElementById('q'),rows=[].slice.call(document.querySelectorAll('#list .row')),biz='',ward='';
   function norm(s){return (s||'').normalize('NFKC').toLowerCase();}
-  function apply(){var t=norm(q.value),n=0,ids=[];rows.forEach(function(r){var ok=(!t||norm(r.dataset.n).indexOf(t)>=0||norm(r.dataset.a).indexOf(t)>=0)&&(!biz||r.dataset.b===biz)&&(!ward||r.dataset.w===ward);r.style.display=ok?'':'none';if(ok){n++;ids.push(r.getAttribute('href').split('/shops/')[1].replace('.html',''));}});document.getElementById('count').textContent=n+'件';if(window.sonomiseMapFilter)window.sonomiseMapFilter(ids,q.value.trim());}
+  function apply(){var t=norm(q.value),n=0,ids=[];var crows=[].slice.call(document.querySelectorAll('#community-spots .row'));crows.forEach(function(r){var ok=(!t||norm(r.dataset.n).indexOf(t)>=0||norm(r.dataset.a).indexOf(t)>=0)&&(!biz||biz==='other');r.style.display=ok?'':'none';});rows.forEach(function(r){var ok=(!t||norm(r.dataset.n).indexOf(t)>=0||norm(r.dataset.a).indexOf(t)>=0)&&(!biz||r.dataset.b===biz)&&(!ward||r.dataset.w===ward);r.style.display=ok?'':'none';if(ok){n++;ids.push(r.getAttribute('href').split('/shops/')[1].replace('.html',''));}});document.getElementById('count').textContent=n+'件';if(window.sonomiseMapFilter)window.sonomiseMapFilter(ids,q.value.trim());}
+  window.sonomiseApplyFilter=apply;
   q.addEventListener('input',apply);
   ['biz','ward'].forEach(function(id){document.getElementById(id).addEventListener('click',function(e){var b=e.target.closest('.chip');if(!b)return;[].forEach.call(this.querySelectorAll('.chip'),function(c){c.classList.remove('on')});b.classList.add('on');if(id==='biz')biz=b.dataset.v;else ward=b.dataset.v;apply();});});
   apply();})();
