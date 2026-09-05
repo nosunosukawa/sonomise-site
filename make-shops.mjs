@@ -231,7 +231,7 @@ writeFileSync('spot-new.html', shell({ title: 'この店を教える | その店
   extraHead: `<meta name="robots" content="noindex"><script src="${SITE}/ck-config.js"></script><script src="${SITE}/assets/ck-shared.js"></script><script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script><script src="${SITE}/assets/spot-new.js" defer></script>` }));
 
 // sitemap
-const urls = [`${SITE}/`, `${SITE}/shops/`, `${SITE}/owner.html`, `${SITE}/support.html`, `${SITE}/privacy.html`, `${SITE}/terms.html`, ...rows.map(r => `${SITE}/shops/${r.id}.html`)];
+const urls = [`${SITE}/`, `${SITE}/shops/`, `${SITE}/beta.html`, `${SITE}/owner.html`, `${SITE}/support.html`, `${SITE}/privacy.html`, `${SITE}/terms.html`, ...rows.map(r => `${SITE}/shops/${r.id}.html`)];
 writeFileSync('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u => `  <url><loc>${u}</loc></url>`).join('\n')}\n</urlset>\n`);
 if (!existsSync('robots.txt')) writeFileSync('robots.txt', `User-agent: *\nAllow: /\nSitemap: ${SITE}/sitemap.xml\n`);
 console.log('pages:', rows.length, 'wards:', wards.join(','));
