@@ -48,7 +48,13 @@
     root.appendChild(el('p', 'votes', voteLine ? '投票: ' + voteLine : 'まだ投票はありません。'));
     if (photos.length) {
       var grid = el('div', 'photos');
-      photos.slice(0, 12).forEach(function (p) { var img = el('img'); img.src = p.url; img.loading = 'lazy'; img.alt = '利用者が投稿した店の写真'; grid.appendChild(img); });
+      photos.slice(0, 12).forEach(function (p) {
+        var img = el('img'); img.src = p.url; img.loading = 'lazy'; img.alt = p.official ? '店から預かった写真' : '利用者が投稿した店の写真'; img.tabIndex = 0; img.setAttribute('role', 'button');
+        // [2026-09-06] 押すと拡大（ライトボックス）。Esc か背景で閉じる。
+        var open = function () { var box = el('div', 'lightbox'); var big = el('img'); big.src = p.url; big.alt = img.alt; box.appendChild(big); var close = function () { box.remove(); document.removeEventListener('keydown', onKey); }; var onKey = function (ev) { if (ev.key === 'Escape') close(); }; box.addEventListener('click', close); document.addEventListener('keydown', onKey); document.body.appendChild(box); };
+        img.addEventListener('click', open); img.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); open(); } });
+        grid.appendChild(img);
+      });
       root.appendChild(grid);
     }
     if (comments.length) {

@@ -37,7 +37,9 @@ const extra = `
   .official h2{font-size:18px}
   @media (prefers-color-scheme: dark){ .official{background:#22301F;border-color:#3C5A3C} }
   .photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-top:12px}
-  .photos img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px}
+  .photos img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px;cursor:zoom-in}
+  .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:50;cursor:zoom-out;padding:16px}
+  .lightbox img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px}
   .comments{list-style:none;padding:0;margin-top:12px}.comments li{padding:8px 0;border-top:1px solid var(--rule)}
   .cdate{color:var(--ink-mut);font-size:14px}
   .note{margin-top:12px;font-size:15px;color:var(--ink-mut)}
