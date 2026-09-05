@@ -150,7 +150,7 @@ for (const s of spots) {
   </div>
   <p class="note">出どころ: ${esc(s.attribution)}（<a href="${esc(s.sourceURL)}">市の公表ページ</a>）</p>`;
   writeFileSync(`shops/${id}.html`, shell({ title, description, canonical, body, jsonld,
-    extraHead: `<script src="${SITE}/assets/share.js" defer></script><script src="${SITE}/ck-config.js"></script><script src="${SITE}/assets/ck-shared.js"></script><script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script><script src="${SITE}/assets/community.js" defer></script><script src="${SITE}/assets/post.js" defer></script>${MAPKIT}` }));
+    extraHead: `<script src="${SITE}/assets/share.js" defer></script><script src="${SITE}/ck-config.js?v=20260906"></script><script src="${SITE}/assets/ck-shared.js"></script><script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script><script src="${SITE}/assets/community.js" defer></script><script src="${SITE}/assets/post.js" defer></script>${MAPKIT}` }));
 }
 
 // 一覧
@@ -179,7 +179,7 @@ const listBody = `
   apply();})();
   </script>`;
 writeFileSync('shops/index.html', shell({ title: '新潟市で席で飲みながら吸える店 907件 — 地図と一覧 | その店、吸える？', description: '新潟市に喫煙可能室の届出がある飲食店を地図と一覧で。店名・区・業態で探せます。名簿に無い店は Apple の地図から候補を出します。', canonical: `${SITE}/shops/`, body: listBody,
-  extraHead: `<script src="${SITE}/ck-config.js"></script><script src="${SITE}/assets/ck-shared.js"></script><script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script><script src="${SITE}/assets/community-spots.js" defer></script><script src="${SITE}/assets/recent.js" defer></script>${MAPKIT}` }));
+  extraHead: `<script src="${SITE}/ck-config.js?v=20260906"></script><script src="${SITE}/assets/ck-shared.js"></script><script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script><script src="${SITE}/assets/community-spots.js" defer></script><script src="${SITE}/assets/recent.js" defer></script>${MAPKIT}` }));
 
 // 動的ページ（利用者が教えた店・新しい店を教える）。中身は JS が CloudKit から組む。
 const spotBody = `
@@ -199,7 +199,7 @@ const spotBody = `
   <div class="card" id="post" data-site="${SITE}"><h2>この店に行った？</h2><p class="note">投票フォームを読み込んでいます…</p></div>
   <p class="note" id="notfound" hidden>この店はまだ載っていません（人数か証拠が足りないか、取り下げられました）。<a href="${SITE}/shops/">店をさがす</a>へ戻る。</p>`;
 writeFileSync('spot.html', shell({ title: '利用者が教えた店 | その店、吸える？', description: 'アプリの利用者が教え、人数と証拠がそろって載った店のページ。', canonical: `${SITE}/spot.html`, body: spotBody,
-  extraHead: `<meta name="robots" content="noindex"><script src="${SITE}/ck-config.js"></script><script src="${SITE}/assets/ck-shared.js"></script><script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script><script src="${SITE}/assets/community-spots.js" defer></script><script src="${SITE}/mk-config.js"></script><script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js" crossorigin async data-callback="sonomiseMapKitLoaded" data-libraries="map,annotations,services"></script><script>window.sonomiseMapKitLoaded=function(){window.__mapkitReady=true;if(window.__sonomiseSpotReady)window.__sonomiseSpotReady();};</script>` }));
+  extraHead: `<meta name="robots" content="noindex"><script src="${SITE}/ck-config.js?v=20260906"></script><script src="${SITE}/assets/ck-shared.js"></script><script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script><script src="${SITE}/assets/community-spots.js" defer></script><script src="${SITE}/mk-config.js"></script><script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js" crossorigin async data-callback="sonomiseMapKitLoaded" data-libraries="map,annotations,services"></script><script>window.sonomiseMapKitLoaded=function(){window.__mapkitReady=true;if(window.__sonomiseSpotReady)window.__sonomiseSpotReady();};</script>` }));
 
 const newBody = `
   <header>
@@ -232,7 +232,7 @@ const newBody = `
     </form>
   </div>`;
 writeFileSync('spot-new.html', shell({ title: 'この店を教える | その店、吸える？', description: '名簿に無い吸える店を教えるフォーム。人数と証拠がそろうとアプリとサイトに載ります。', canonical: `${SITE}/spot-new.html`, body: newBody,
-  extraHead: `<meta name="robots" content="noindex"><script src="${SITE}/ck-config.js"></script><script src="${SITE}/assets/ck-shared.js"></script><script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script><script src="${SITE}/assets/spot-new.js" defer></script>` }));
+  extraHead: `<meta name="robots" content="noindex"><script src="${SITE}/ck-config.js?v=20260906"></script><script src="${SITE}/assets/ck-shared.js"></script><script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script><script src="${SITE}/assets/spot-new.js" defer></script>` }));
 
 // sitemap
 const urls = [`${SITE}/`, `${SITE}/shops/`, `${SITE}/beta.html`, `${SITE}/owner.html`, `${SITE}/support.html`, `${SITE}/privacy.html`, `${SITE}/terms.html`, ...rows.map(r => `${SITE}/shops/${r.id}.html`)];
