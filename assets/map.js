@@ -8,8 +8,12 @@
   var NIIGATA = new mapkit.Coordinate(37.9161, 139.0364);
 
   mapkit.init({ authorizationCallback: function (done) { done(token); }, language: 'ja' });
+  var oneLat = mapEl.getAttribute('data-lat');
+  var startCenter = oneLat ? new mapkit.Coordinate(parseFloat(oneLat), parseFloat(mapEl.getAttribute('data-lon'))) : NIIGATA;
+  var startSpan = oneLat ? new mapkit.CoordinateSpan(0.008, 0.008) : new mapkit.CoordinateSpan(0.12, 0.12);
   var map = new mapkit.Map(mapEl, {
-    center: NIIGATA, showsCompass: mapkit.FeatureVisibility.Hidden, showsScale: mapkit.FeatureVisibility.Adaptive,
+    region: new mapkit.CoordinateRegion(startCenter, startSpan),
+    showsCompass: mapkit.FeatureVisibility.Hidden, showsScale: mapkit.FeatureVisibility.Adaptive,
     isRotationEnabled: false, colorScheme: window.matchMedia('(prefers-color-scheme: dark)').matches ? mapkit.Map.ColorSchemes.Dark : mapkit.Map.ColorSchemes.Light
   });
 
@@ -19,7 +23,7 @@
     var c = new mapkit.Coordinate(parseFloat(one), parseFloat(mapEl.getAttribute('data-lon')));
     var m = new mapkit.MarkerAnnotation(c, { color: BROWN, glyphText: '☕', title: mapEl.getAttribute('data-name') });
     map.addAnnotation(m);
-    map.region = new mapkit.CoordinateRegion(c, new mapkit.CoordinateSpan(0.008, 0.008));
+    setTimeout(function () { map.setRegionAnimated(new mapkit.CoordinateRegion(c, new mapkit.CoordinateSpan(0.008, 0.008)), false); }, 50);
     return;
   }
 
@@ -36,7 +40,8 @@
     return a;
   });
   map.addAnnotations(annotations);
-  map.region = new mapkit.CoordinateRegion(NIIGATA, new mapkit.CoordinateSpan(0.12, 0.12));
+  // ピンを足すと MapKit が範囲を広げることがあるので、描画後にもう一度新潟市へ寄せる。
+  setTimeout(function () { map.setRegionAnimated(new mapkit.CoordinateRegion(NIIGATA, new mapkit.CoordinateSpan(0.12, 0.12)), false); }, 50);
 
   function calloutFor(hrefOf, label) {
     return {
