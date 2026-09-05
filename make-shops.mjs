@@ -129,6 +129,7 @@ for (const s of spots) {
     <div class="btns">
       <a class="btn btn-main" href="${mapURL}">Apple の地図で開く</a>
       <a class="btn btn-sub" href="${googleURL}" rel="nofollow">Google で調べる</a>
+      <button class="btn btn-sub" type="button" data-share="${canonical}" data-title="${esc(s.name)}">この店のページを共有</button>
     </div>
   </div>
   <div class="card" id="community" data-spot-id="${id}" data-site="${SITE}" data-spot-name="${esc(s.name)}"><h2>行った人の声</h2><p class="note">読み込んでいます…</p></div>
@@ -145,7 +146,7 @@ for (const s of spots) {
   </div>
   <p class="note">出どころ: ${esc(s.attribution)}（<a href="${esc(s.sourceURL)}">市の公表ページ</a>）</p>`;
   writeFileSync(`shops/${id}.html`, shell({ title, description, canonical, body, jsonld,
-    extraHead: `<script src="${SITE}/ck-config.js"></script><script src="${SITE}/assets/ck-shared.js"></script><script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script><script src="${SITE}/assets/community.js" defer></script><script src="${SITE}/assets/post.js" defer></script>${MAPKIT}` }));
+    extraHead: `<script src="${SITE}/assets/share.js" defer></script><script src="${SITE}/ck-config.js"></script><script src="${SITE}/assets/ck-shared.js"></script><script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script><script src="${SITE}/assets/community.js" defer></script><script src="${SITE}/assets/post.js" defer></script>${MAPKIT}` }));
 }
 
 // 一覧
