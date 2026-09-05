@@ -33,6 +33,9 @@ const extra = `
   .btn{display:flex;align-items:center;justify-content:center;min-height:56px;padding:10px 14px;border-radius:12px;font-size:18px;font-weight:800;text-decoration:none;border:2px solid var(--brown)}
   .btn-main{background:var(--brown);color:#fff}.btn-sub{background:var(--brown-soft);color:var(--brown)}
   .kv{margin-top:12px;color:var(--ink-mut);font-size:16px}
+  .official{background:#EEF4EE;border:1px solid #C5D9C5;border-radius:12px;padding:14px 16px;margin-bottom:16px}
+  .official h2{font-size:18px}
+  @media (prefers-color-scheme: dark){ .official{background:#22301F;border-color:#3C5A3C} }
   .photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-top:12px}
   .photos img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px}
   .comments{list-style:none;padding:0;margin-top:12px}.comments li{padding:8px 0;border-top:1px solid var(--rule)}
@@ -73,7 +76,7 @@ ${extraHead}
 <body>
 <div class="head"><div class="head-in">
   <span class="head-name"><a href="${SITE}/">その店、吸える？</a></span>
-  <nav class="head-links" aria-label="ページ"><a href="${SITE}/shops/">店をさがす</a><a href="${SITE}/support.html">サポート</a></nav>
+  <nav class="head-links" aria-label="ページ"><a href="${SITE}/shops/">店をさがす</a><a href="${SITE}/owner.html">店主の方へ</a><a href="${SITE}/support.html">サポート</a></nav>
 </div></div>
 <div class="wrap">
 ${body}
@@ -117,7 +120,12 @@ for (const s of spots) {
       <a class="btn btn-sub" href="${googleURL}" rel="nofollow">Google で調べる</a>
     </div>
   </div>
-  <div class="card" id="community" data-spot-id="${id}"><h2>行った人の声</h2><p class="note">読み込んでいます…</p></div>
+  <div class="card" id="community" data-spot-id="${id}" data-site="${SITE}" data-spot-name="${esc(s.name)}"><h2>行った人の声</h2><p class="note">読み込んでいます…</p></div>
+  <div class="card" id="owner">
+    <h2>この店の店主の方へ</h2>
+    <p>営業時間・店からのひとこと・公式ページを、アプリとこのページに<strong>無料</strong>で載せられます。運営が店の代表電話に確認してから載せます。</p>
+    <div class="btns"><a class="btn btn-sub" href="${SITE}/owner.html?spot=${id}&amp;name=${encodeURIComponent(s.name)}">公式情報の掲載を申し込む</a></div>
+  </div>
   <div class="card">
     <h2>アプリで、近くの吸える店を探す</h2>
     <p>「その店、吸える？」は、新潟市の届出名簿907件を地図に載せ、行った人の投票と写真で育てる iPhone アプリです。20歳以上の方向け。App Store で近日公開。</p>

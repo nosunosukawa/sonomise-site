@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#FFFDF8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1B140F" media="(prefers-color-scheme: dark)">
+<title>その店、吸える？ — 店主の方へ（公式情報の掲載・無料）</title>
+<meta name="description" content="新潟市の「席で飲みながら吸える店」を載せる iPhone アプリとサイト「その店、吸える？」。店主の方は、営業時間・店からのひとこと・公式ページを無料で載せられます。運営が店の代表電話に確認してから掲載します。">
+<link rel="canonical" href="https://nosunosukawa.github.io/sonomise-site/owner.html">
+<meta name="robots" content="index,follow">
+<script src="ck-config.js"></script>
+<script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script>
+<style>
+  :root{
+    color-scheme:light dark;
+    --paper:#FFFDF8; --sheet:#FFFFFF;
+    --ink:#3E2A1E; --ink-mut:#6B584A;
+    --brown:#5C3B26; --brown-soft:#F3EBE3;
+    --rule:#E3D9CC; --line-strong:#A28B76;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#1B140F; --sheet:#241C15;
+      --ink:#F2E9E0; --ink-mut:#C7B8A9;
+      --brown:#D9B48F; --brown-soft:#2C2118;
+      --rule:#3B2F25; --line-strong:#8A7462;
+    }
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important;scroll-behavior:auto !important}
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%;scroll-padding-top:24px}
+  body{touch-action:manipulation;-webkit-tap-highlight-color:rgba(92,59,38,.15);
+    background:var(--paper);color:var(--ink);
+    font-family:"Hiragino Sans","ヒラギノ角ゴシック","Hiragino Kaku Gothic ProN",
+                "Yu Gothic","YuGothic","Noto Sans JP",-apple-system,sans-serif;
+    font-size:17px;line-height:1.9;-webkit-font-smoothing:antialiased;
+    overflow-wrap:break-word}
+  .wrap{max-width:640px;margin:0 auto;padding:0 16px 72px}
+
+  a{color:var(--brown);font-weight:700;
+    text-decoration:underline;text-decoration-color:currentColor;text-underline-offset:4px}
+  a:hover{text-decoration-thickness:2px}
+  :focus-visible{outline:3px solid var(--brown);outline-offset:3px;border-radius:4px}
+
+  .head{border-bottom:1px solid var(--rule)}
+  .head-in{max-width:640px;margin:0 auto;padding:0 16px;
+    display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0 20px}
+  .head-name{font-size:19px;font-weight:800;line-height:1.4}
+  .head-name a{display:inline-flex;align-items:center;min-height:48px}
+  .head-links{display:flex;gap:18px}
+  .head-links a{display:inline-flex;align-items:center;min-height:48px;font-size:17px}
+
+  header{margin:36px 0 22px}
+  h1{font-size:28px;text-wrap:balance;line-height:1.4;font-weight:800}
+  .lead{margin-top:14px;font-size:19px;line-height:1.8;font-weight:600}
+  .card{background:var(--sheet);border:1px solid var(--line-strong);border-radius:14px;padding:20px}
+  .card + .card{margin-top:14px}
+  .card h2{font-size:22px;line-height:1.6;margin-bottom:6px;font-weight:800}
+  .card h3{font-size:18px;line-height:1.6;margin:16px 0 4px;font-weight:800}
+  .card p + p{margin-top:12px}
+  .card ul,.card ol{padding-left:1.3em;margin-top:12px}
+  .card li{margin-top:8px}
+  .card li::marker{color:var(--brown)}
+  .mailbtn{display:flex;align-items:center;justify-content:center;text-align:center;
+    min-height:60px;margin-top:12px;padding:12px 14px;font-size:19px;font-weight:800;
+    overflow-wrap:anywhere;color:var(--brown);background:var(--brown-soft);
+    border:2px solid var(--brown);border-radius:12px;text-underline-offset:4px}
+  footer{margin-top:56px;padding-top:12px;border-top:1px solid var(--rule);
+    text-align:center;color:var(--ink-mut);line-height:2}
+  footer a{display:inline-flex;align-items:center;min-height:48px;padding:0 4px}
+  section[id],h2[id],div[id]{scroll-margin-top:24px}
+</style>
+
+<style>
+  label{display:block;font-weight:800;margin-top:14px}
+  input,textarea{width:100%;margin-top:6px;padding:12px 14px;font:inherit;font-size:17px;color:var(--ink);
+    background:var(--paper);border:2px solid var(--line-strong);border-radius:12px}
+  textarea{min-height:110px;resize:vertical}
+  .hint{color:var(--ink-mut);font-size:15px;line-height:1.7;margin-top:6px}
+  .check{display:flex;gap:10px;align-items:flex-start;margin-top:16px;font-weight:600}
+  .check input{width:24px;height:24px;margin:4px 0 0;flex:none}
+  button.mailbtn{width:100%;cursor:pointer;font-family:inherit}
+  button.mailbtn:disabled{opacity:.45;cursor:not-allowed}
+  .ok{background:#EEF4EE;border-color:#4E7A4E;color:#2F5A2F}
+  @media (prefers-color-scheme: dark){ .ok{background:#22301F;border-color:#7FB37F;color:#CFE6CF} }
+  .steps li{margin-top:10px}
+  #apple-sign-in-button,#apple-sign-out-button{margin-top:12px;min-height:44px}
+  .spotpick{margin-top:8px;padding:12px 14px;border:1px dashed var(--line-strong);border-radius:12px;color:var(--ink-mut);font-size:15px}
+  .spotpick strong{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="head">
+  <div class="head-in">
+    <span class="head-name"><a href="index.html">その店、吸える？</a></span>
+    <nav class="head-links" aria-label="ほかのページ">
+      <a href="index.html">最初のページ</a>
+      <a href="privacy.html">プライバシー</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+<header>
+  <h1>店主の方へ<br>公式情報を、無料で載せられます</h1>
+  <p class="lead">アプリと店ページの「店からのお知らせ」に、営業時間・ひとこと・公式ページが載ります。順位や地図での見え方は変わりません。</p>
+</header>
+
+<section class="card" id="flow">
+  <h2>載るまでの流れ</h2>
+  <ol class="steps">
+    <li>下のフォームから申請を送る（店名・店の代表電話・載せたい内容）。</li>
+    <li>運営が<strong>店の代表電話</strong>にお電話し、店の方であることを確かめます（なりすまし防止のため、電話以外の方法では確認しません）。</li>
+    <li>確認できたら、運営が公式情報を載せます。以後の変更もこのフォームからどうぞ。</li>
+  </ol>
+  <p class="hint">申請から掲載まで、通常は数日以内です。掲載を取り下げたいときも同じフォームから。</p>
+</section>
+
+<section class="card" id="form">
+  <h2>申請フォーム</h2>
+  <div class="spotpick" id="spotpick">店ページの「店主の方へ」から来ると、店が自動で選ばれます。ここから直接来た場合は、下の店名で運営が探します。</div>
+  <form id="claim" novalidate>
+    <label for="shopName">店名 <span class="hint" style="display:inline">（必須）</span></label>
+    <input id="shopName" name="shopName" required maxlength="80" autocomplete="organization" placeholder="例: カフェ・シャモニー">
+    <label for="phone">店の代表電話 <span class="hint" style="display:inline">（必須・運営がここに掛けます）</span></label>
+    <input id="phone" name="phone" required inputmode="tel" autocomplete="tel" maxlength="20" placeholder="例: 025-000-0000">
+    <label for="message">載せたい内容・ご希望 <span class="hint" style="display:inline">（任意・300字まで）</span></label>
+    <textarea id="message" name="message" maxlength="300" placeholder="例: 営業時間 17:00–24:00、月曜休。全席で紙巻き・加熱式ともに吸えます。公式 Instagram: @…"></textarea>
+    <label class="check"><input type="checkbox" id="agree"> 私はこの店の運営者（または店から任された方）で、代表電話への確認に応じます。</label>
+    <p class="hint">送っていただく内容は、確認のために運営のデータベース（iCloud）に保存されます。担当者のお名前やメールアドレスは集めません。店の代表電話はすでに公開されている情報として扱います。</p>
+
+    <div id="ck-area" hidden>
+      <p class="hint" style="margin-top:14px">送信には Apple ID でのサインインが必要です（いたずら申請を防ぐため）。サインインしても、運営に Apple ID やお名前は伝わりません。</p>
+      <div id="apple-sign-in-button"></div>
+      <div id="apple-sign-out-button" hidden></div>
+      <button type="submit" class="mailbtn" id="send" disabled>申請を送る</button>
+    </div>
+    <p id="status" class="hint" role="status" aria-live="polite"></p>
+  </form>
+  <h3>メールで送る</h3>
+  <p class="hint">Apple ID でのサインインが難しい場合は、同じ内容をメールでお送りください（下のボタンで下書きができます）。</p>
+  <a class="mailbtn" id="mailto" href="mailto:nosunosukawa@gmail.com?subject=%E3%80%90%E5%BA%97%E4%B8%BB%E7%94%B3%E8%AB%8B%E3%80%91">メールで申請する</a>
+</section>
+
+<section class="card" id="faq">
+  <h2>よくあるご質問</h2>
+  <h3>費用はかかりますか？</h3>
+  <p>かかりません。公式情報の掲載は無料です。</p>
+  <h3>店の情報を消してほしい</h3>
+  <p>名簿の情報は新潟市の公表資料に基づきます。掲載の取り下げや修正のご依頼は<a href="support.html">サポート</a>からどうぞ（同じく代表電話で確認します）。</p>
+  <h3>利用者の投票や写真を消せますか？</h3>
+  <p>店の方の申し出だけでは消しません。事実と異なる・不適切なものは、アプリの「通報」または<a href="support.html">サポート</a>からお知らせください。運営が確認して対応します。</p>
+</section>
+</main>
+
+<footer class="wrap" style="margin-top:56px">
+  <a href="index.html">アプリについて</a>・<a href="shops/">店をさがす</a>・<a href="support.html">サポート</a>・<a href="privacy.html">プライバシー</a>・<a href="terms.html">利用規約</a>
+</footer>
+
+<script src="assets/owner.js" defer></script>
+</body>
+</html>
