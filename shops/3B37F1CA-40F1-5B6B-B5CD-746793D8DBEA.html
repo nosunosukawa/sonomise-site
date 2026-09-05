@@ -13,7 +13,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://nosunosukawa.github.io/sonomise-site/shops/3B37F1CA-40F1-5B6B-B5CD-746793D8DBEA.html">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BarOrPub","name":"お飲処 夜酔","address":{"@type":"PostalAddress","addressLocality":"新潟市","addressRegion":"新潟県","streetAddress":"東区新石山4-2-5"},"geo":{"@type":"GeoCoordinates","latitude":37.899776,"longitude":139.095215},"smokingAllowed":true,"url":"https://nosunosukawa.github.io/sonomise-site/shops/3B37F1CA-40F1-5B6B-B5CD-746793D8DBEA.html"}</script>
-<script src="https://nosunosukawa.github.io/sonomise-site/ck-config.js"></script><script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script><script src="https://nosunosukawa.github.io/sonomise-site/assets/community.js" defer></script>
+<script src="https://nosunosukawa.github.io/sonomise-site/ck-config.js"></script><script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script><script src="https://nosunosukawa.github.io/sonomise-site/assets/community.js" defer></script><script src="https://nosunosukawa.github.io/sonomise-site/mk-config.js"></script><script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js" crossorigin async data-callback="sonomiseMapKitLoaded" data-libraries="map,annotations,services"></script><script>window.sonomiseMapKitLoaded=function(){var s=document.createElement('script');s.src='https://nosunosukawa.github.io/sonomise-site/assets/map.js';document.body.appendChild(s);};</script>
 <style>
   :root{
     color-scheme:light dark;
@@ -94,6 +94,11 @@
   .chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
   .chip{border:2px solid var(--brown);border-radius:999px;padding:6px 12px;background:var(--sheet);color:var(--brown);font-weight:700;font-size:15px;cursor:pointer}
   .chip.on{background:var(--brown);color:#fff}
+  #map{width:100%;height:58vh;min-height:320px;border-radius:14px;border:1px solid var(--line-strong);margin:12px 0;overflow:hidden}
+  #map.small{height:260px;min-height:200px}
+  .callout{padding:8px 10px;max-width:240px;font-size:14px;line-height:1.5}
+  .callout-title{font-weight:800;font-size:15px}.callout-sub{color:#6B584A;font-size:13px}
+  .callout-link{display:inline-block;margin-top:6px;font-weight:700}
 </style>
 </head>
 <body>
@@ -112,6 +117,7 @@
   <div class="card">
     <h2>この店で吸えるか</h2>
     <p>新潟市に「喫煙可能室」の届出がある店です。届出の種別から、<strong>席で飲みながら吸える</strong>と推定しています。全席か一部かは名簿から分かりません。行く前に店へご確認ください。</p>
+    <div id="map" class="small" data-site="https://nosunosukawa.github.io/sonomise-site" data-lat="37.899776" data-lon="139.095215" data-name="お飲処 夜酔" aria-label="お飲処 夜酔の地図"></div>
     <div class="btns">
       <a class="btn btn-main" href="https://maps.apple.com/?q=%E3%81%8A%E9%A3%B2%E5%87%A6%20%E5%A4%9C%E9%85%94&ll=37.899776,139.095215">Apple の地図で開く</a>
       <a class="btn btn-sub" href="https://www.google.com/search?q=%E3%81%8A%E9%A3%B2%E5%87%A6%20%E5%A4%9C%E9%85%94%20%E6%96%B0%E6%BD%9F%E5%B8%82%E6%9D%B1%E5%8C%BA%E6%96%B0%E7%9F%B3%E5%B1%B14-2-5" rel="nofollow">Google で調べる</a>

@@ -13,6 +13,7 @@ const CATEGORY = {
   noSmoking: '禁煙',
   unknown: '未確認',
 };
+const MAPKIT = `<script src="${SITE}/mk-config.js"></script><script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js" crossorigin async data-callback="sonomiseMapKitLoaded" data-libraries="map,annotations,services"></script><script>window.sonomiseMapKitLoaded=function(){var s=document.createElement('script');s.src='${SITE}/assets/map.js';document.body.appendChild(s);};</script>`;
 const BUSINESS = { coffee: 'コーヒーが主役の店', bar: 'お酒も出る店', other: '業態はまだ分からない店' };
 
 function stableID(name, address) {
@@ -43,6 +44,11 @@ const extra = `
   .chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
   .chip{border:2px solid var(--brown);border-radius:999px;padding:6px 12px;background:var(--sheet);color:var(--brown);font-weight:700;font-size:15px;cursor:pointer}
   .chip.on{background:var(--brown);color:#fff}
+  #map{width:100%;height:58vh;min-height:320px;border-radius:14px;border:1px solid var(--line-strong);margin:12px 0;overflow:hidden}
+  #map.small{height:260px;min-height:200px}
+  .callout{padding:8px 10px;max-width:240px;font-size:14px;line-height:1.5}
+  .callout-title{font-weight:800;font-size:15px}.callout-sub{color:#6B584A;font-size:13px}
+  .callout-link{display:inline-block;margin-top:6px;font-weight:700}
 `;
 
 function shell({ title, description, canonical, body, jsonld, extraHead = '' }) {
@@ -105,6 +111,7 @@ for (const s of spots) {
   <div class="card">
     <h2>この店で吸えるか</h2>
     <p>新潟市に「喫煙可能室」の届出がある店です。届出の種別から、<strong>席で飲みながら吸える</strong>と推定しています。全席か一部かは名簿から分かりません。行く前に店へご確認ください。</p>
+    <div id="map" class="small" data-site="${SITE}" data-lat="${s.lat}" data-lon="${s.lon}" data-name="${esc(s.name)}" aria-label="${esc(s.name)}の地図"></div>
     <div class="btns">
       <a class="btn btn-main" href="${mapURL}">Apple の地図で開く</a>
       <a class="btn btn-sub" href="${googleURL}" rel="nofollow">Google で調べる</a>
@@ -118,7 +125,7 @@ for (const s of spots) {
   </div>
   <p class="note">出どころ: ${esc(s.attribution)}（<a href="${esc(s.sourceURL)}">市の公表ページ</a>）</p>`;
   writeFileSync(`shops/${id}.html`, shell({ title, description, canonical, body, jsonld,
-    extraHead: `<script src="${SITE}/ck-config.js"></script><script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script><script src="${SITE}/assets/community.js" defer></script>` }));
+    extraHead: `<script src="${SITE}/ck-config.js"></script><script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js" async></script><script src="${SITE}/assets/community.js" defer></script>${MAPKIT}` }));
 }
 
 // 一覧
@@ -128,7 +135,9 @@ const listBody = `
     <h1>新潟市で、席で飲みながら吸える店 ${rows.length}件</h1>
     <p class="lead">新潟市に喫煙可能室の届出がある飲食店の一覧です。店名で探すか、区と業態で絞ってください。</p>
   </header>
-  <input class="search" id="q" type="search" placeholder="店名・住所で探す" aria-label="店名・住所で探す">
+  <input class="search" id="q" type="search" placeholder="店名・住所で探す（名簿に無い店は Apple の地図から）" aria-label="店名・住所で探す">
+  <div id="map" data-site="${SITE}" aria-label="新潟市の吸える店の地図"></div>
+  <script type="application/json" id="spots-data">${JSON.stringify(rows.map(r => ({ id: r.id, n: r.name, a: r.address, b: r.businessType, lat: r.lat, lon: r.lon })))}</script>
   <div class="chips" id="biz"><button class="chip on" data-v="">すべて</button><button class="chip" data-v="coffee">コーヒーが主役の店</button><button class="chip" data-v="bar">お酒も出る店</button><button class="chip" data-v="other">まだ分からない店</button></div>
   <div class="chips" id="ward"><button class="chip on" data-v="">全区</button>${wards.map(w => `<button class="chip" data-v="${esc(w)}">${esc(w)}</button>`).join('')}</div>
   <div class="list" id="list">${rows.map(r => `<a class="row" href="${SITE}/shops/${r.id}.html" data-n="${esc(r.name)}" data-a="${esc(r.address)}" data-b="${r.businessType}" data-w="${esc(r.ward)}"><b>${esc(r.name)}</b><span>${esc(r.address)} ・ ${esc(BUSINESS[r.businessType] || '')}</span></a>`).join('\n')}</div>
@@ -136,12 +145,12 @@ const listBody = `
   <script>
   (function(){var q=document.getElementById('q'),rows=[].slice.call(document.querySelectorAll('#list .row')),biz='',ward='';
   function norm(s){return (s||'').normalize('NFKC').toLowerCase();}
-  function apply(){var t=norm(q.value),n=0;rows.forEach(function(r){var ok=(!t||norm(r.dataset.n).indexOf(t)>=0||norm(r.dataset.a).indexOf(t)>=0)&&(!biz||r.dataset.b===biz)&&(!ward||r.dataset.w===ward);r.style.display=ok?'':'none';if(ok)n++;});document.getElementById('count').textContent=n+'件';}
+  function apply(){var t=norm(q.value),n=0,ids=[];rows.forEach(function(r){var ok=(!t||norm(r.dataset.n).indexOf(t)>=0||norm(r.dataset.a).indexOf(t)>=0)&&(!biz||r.dataset.b===biz)&&(!ward||r.dataset.w===ward);r.style.display=ok?'':'none';if(ok){n++;ids.push(r.getAttribute('href').split('/shops/')[1].replace('.html',''));}});document.getElementById('count').textContent=n+'件';if(window.sonomiseMapFilter)window.sonomiseMapFilter(ids,q.value.trim());}
   q.addEventListener('input',apply);
   ['biz','ward'].forEach(function(id){document.getElementById(id).addEventListener('click',function(e){var b=e.target.closest('.chip');if(!b)return;[].forEach.call(this.querySelectorAll('.chip'),function(c){c.classList.remove('on')});b.classList.add('on');if(id==='biz')biz=b.dataset.v;else ward=b.dataset.v;apply();});});
   apply();})();
   </script>`;
-writeFileSync('shops/index.html', shell({ title: '新潟市で席で飲みながら吸える店 907件 | その店、吸える？', description: '新潟市に喫煙可能室の届出がある飲食店の一覧。店名・区・業態で探せます。行った人の投票と写真はアプリで。', canonical: `${SITE}/shops/`, body: listBody }));
+writeFileSync('shops/index.html', shell({ title: '新潟市で席で飲みながら吸える店 907件 — 地図と一覧 | その店、吸える？', description: '新潟市に喫煙可能室の届出がある飲食店を地図と一覧で。店名・区・業態で探せます。名簿に無い店は Apple の地図から候補を出します。', canonical: `${SITE}/shops/`, body: listBody, extraHead: MAPKIT }));
 
 // sitemap
 const urls = [`${SITE}/`, `${SITE}/shops/`, `${SITE}/support.html`, `${SITE}/privacy.html`, `${SITE}/terms.html`, ...rows.map(r => `${SITE}/shops/${r.id}.html`)];

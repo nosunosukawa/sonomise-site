@@ -1,0 +1,2 @@
+// MapKit JS のトークン（origin 限定・2027-09-05 まで）。make-token.mjs で作る。
+window.SONOMISE_MAPKIT_TOKEN = 'eyJhbGciOiJFUzI1NiIsImtpZCI6IlFKRlc3M1Q1WTIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJZTjg2QkRNM0s3IiwiaWF0IjoxNzg4NjA5NDQ0LCJleHAiOjE4MjAxNDU0NDQsIm9yaWdpbiI6Imh0dHBzOi8vbm9zdW5vc3VrYXdhLmdpdGh1Yi5pbyJ9.7opbi7Cp0S54ONvjh1BSnMUFgmoOiaKHuAX6JIyf4wfEG-EUpCfgvFcF1aUJxMsPfyoQm3XhCXaCcZsibeb-3Q';
