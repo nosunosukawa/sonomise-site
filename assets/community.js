@@ -13,13 +13,19 @@
 
   var owners = {};
   function render(records, hidden, blocked) {
-    var votes = {}, comments = [], photos = [], official = null;
+    var votes = {}, comments = [], photos = [], official = null, closedAt = null;
     records.forEach(function (r) {
       var f = r.fields || {};
       var author = (r.created && r.created.userRecordName) || (f.authorRecordName && f.authorRecordName.value) || '';
       if (hidden[r.recordName] || blocked[author]) return;
       var kind = f.kind && f.kind.value;
       var at = r.created && r.created.timestamp;
+      // [2026-09-06] 運営の閉店扱い（ownerClose / ownerReopen）。運営の記録だけ、新しい方が勝つ。
+      if (kind === 'ownerClose' || kind === 'ownerReopen') {
+        if (!owners[author]) return;
+        if (closedAt === null || at > closedAt.at) closedAt = { at: at, closed: kind === 'ownerClose' };
+        return;
+      }
       // 公式情報（運営が店に確かめて載せた分）。運営者以外が送った同じ kind は無視する。一番新しい1件だけ。
       if (kind === 'officialInfo') {
         if (!owners[author] || official) return;
@@ -34,6 +40,9 @@
       assets.forEach(function (a) { if (a && a.downloadURL) photos.push({ url: a.downloadURL, at: at }); });
     });
     root.innerHTML = '';
+    if (closedAt && closedAt.closed) {
+      var cb = el('div', 'closed'); cb.appendChild(el('strong', null, '閉店（運営確認）')); cb.appendChild(el('span', null, ' この店は閉店、または吸えなくなったことを運営が確かめました（' + fmtDate(closedAt.at) + '）。アプリの地図からは外れています。')); root.appendChild(cb);
+    }
     if (official && (official.hours || official.comment || official.url)) {
       var box = el('div', 'official');
       box.appendChild(el('h2', null, '店からのお知らせ'));
@@ -105,7 +114,7 @@
         });
         return query(db, { recordType: 'Report', filterBy: [
           { fieldName: 'spotID', comparator: 'EQUALS', fieldValue: { value: spotID } },
-          { fieldName: 'kind', comparator: 'IN', fieldValue: { value: VOTE_KINDS.concat(['comment', 'officialInfo']) } }
+          { fieldName: 'kind', comparator: 'IN', fieldValue: { value: VOTE_KINDS.concat(['comment', 'officialInfo', 'ownerClose', 'ownerReopen']) } }
         ], sortBy: [{ fieldName: 'createdAt', ascending: false }] }).then(function (records) { settled = true; render(records, hidden, blocked); });
       }).catch(function () { settled = true; root.innerHTML = ''; });
     } catch (e) { root.innerHTML = ''; }
