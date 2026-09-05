@@ -7,7 +7,13 @@
   var BROWN = '#5C3B26', GRAY = '#A28B76';
   var NIIGATA = new mapkit.Coordinate(37.9161, 139.0364);
 
+  // 認証が終わってから地図を作る（先に作ると範囲の指定が効かず日本全図になった・2026-09-05 実測）。
+  var started = false;
+  mapkit.addEventListener('configuration-change', function (e) { if (e.status === 'Initialized' && !started) { started = true; build(); } });
+  mapkit.addEventListener('error', function (e) { console.warn('mapkit', e && e.status); });
   mapkit.init({ authorizationCallback: function (done) { done(token); }, language: 'ja' });
+
+  function build() {
   var oneLat = mapEl.getAttribute('data-lat');
   var startCenter = oneLat ? new mapkit.Coordinate(parseFloat(oneLat), parseFloat(mapEl.getAttribute('data-lon'))) : NIIGATA;
   var startSpan = oneLat ? new mapkit.CoordinateSpan(0.008, 0.008) : new mapkit.CoordinateSpan(0.12, 0.12);
@@ -87,5 +93,6 @@
         if (note) note.textContent = candidates.length ? '名簿には無い店です。Apple の地図で見つけた ' + candidates.length + ' 件を地図に出しました（吸えるかは未確認）。' : '見つかりませんでした。';
       });
     }, 350);
+  }
   }
 })();
