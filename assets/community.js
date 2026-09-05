@@ -54,7 +54,11 @@
     root.appendChild(el('p', 'note', 'いまは読み込めませんでした。投票と写真はアプリ「その店、吸える？」で見られます。'));
   }, 8000);
 
-  window.addEventListener('cloudkitloaded', function () {
+  // cloudkit.js は async で、こちらの defer より先に読み終わって 'cloudkitloaded' を出すことがある
+  // （店ページに地図を足したあと、8秒の案内に落ちる形で発覚・2026-09-05）。もう居るなら即、まだなら合図を待つ。
+  if (window.CloudKit) { start(); } else { window.addEventListener('cloudkitloaded', start); }
+
+  function start() {
     try {
       CloudKit.configure({ containers: [{ containerIdentifier: cfg.container, apiTokenAuth: { apiToken: cfg.apiToken, persist: false }, environment: cfg.environment }] });
       var db = CloudKit.getDefaultContainer().publicCloudDatabase;
@@ -78,5 +82,5 @@
         ], sortBy: [{ fieldName: 'createdAt', ascending: false }] }).then(function (records) { settled = true; render(records, hidden, blocked); });
       }).catch(function () { settled = true; root.innerHTML = ''; });
     } catch (e) { root.innerHTML = ''; }
-  });
+  }
 })();
