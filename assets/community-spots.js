@@ -71,6 +71,13 @@
           anchorLat: c[0].lat, anchorLon: c[0].lon });
       });
       return Promise.all(published.map(function (p) { return anchorID(p.anchorLat, p.anchorLon).then(function (id) { p.id = id; return p; }); }));
+    }).then(function (list) {
+      // 「最近の投票」（recent.js）が店名を引けるように、店ID→店名を公開する（2026-09-06）。
+      // 投票の spotID は anchorID と同じ鍵なので、名簿に無い店でも名前が付く。
+      var names = {}; list.forEach(function (p) { if (p.id) names[p.id] = p.name || ''; });
+      window.__sonomiseCommunityNames = names;
+      if (window.__sonomiseCommunityNamesReady) window.__sonomiseCommunityNamesReady(names);
+      return list;
     });
   }
 

@@ -21,20 +21,26 @@
       return q(db, { recordType: 'Report', filterBy: [{ fieldName: 'kind', comparator: 'IN', fieldValue: { value: Object.keys(LABEL) } }], sortBy: [{ fieldName: 'createdAt', ascending: false }] }, 40);
     }).then(function (recs) {
       var rows = recs.filter(function (r) { return !hidden[r.recordName] && !blocked[r.created && r.created.userRecordName]; }).slice(0, 15);
+      // 利用者が教えた店の名前は community-spots.js が後から出す（店IDは同じ anchorID）。届いたら描き直す（2026-09-06）。
+      var community = window.__sonomiseCommunityNames || {};
+      window.__sonomiseCommunityNamesReady = function (n) { community = n || {}; render(); };
+      render();
+      function render() {
       root.innerHTML = '';
       root.appendChild(el('h2', null, '最近の投票'));
       if (!rows.length) { root.appendChild(el('p', 'note', 'まだ投票はありません。行った店のページから送れます。')); return; }
       var ul = el('ul', 'comments');
       rows.forEach(function (r) {
-        var f = r.fields, kind = f.kind.value, sid = f.spotID && f.spotID.value, name = names[sid];
+        var f = r.fields, kind = f.kind.value, sid = f.spotID && f.spotID.value, name = names[sid], cname = !name && community[sid];
         var li = el('li');
-        var a = el('a', null, name || '利用者が教えた店'); a.href = name ? SITE + '/shops/' + sid + '.html' : SITE + '/spot.html?id=' + encodeURIComponent(sid || '');
+        var a = el('a', null, name || cname || '利用者が教えた店'); a.href = name ? SITE + '/shops/' + sid + '.html' : SITE + '/spot.html?id=' + encodeURIComponent(sid || '');
         li.appendChild(a); li.appendChild(document.createTextNode(' — ' + (LABEL[kind] || kind)));
         if (kind === 'comment' && f.text && f.text.value) li.appendChild(el('span', 'ctext', '「' + f.text.value + '」'));
         li.appendChild(el('span', 'cdate', ' ' + fmt((f.createdAt && f.createdAt.value) || (r.created && r.created.timestamp))));
         ul.appendChild(li);
       });
       root.appendChild(ul);
+      }
     }).catch(function () { root.innerHTML = ''; });
   });
 })();
