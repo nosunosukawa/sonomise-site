@@ -9,10 +9,34 @@ window.SonomiseCK = (function () {
     var auth = { apiToken: cfg.apiToken, persist: true };
     if (document.getElementById('apple-sign-in-button')) auth.signInButton = { id: 'apple-sign-in-button', theme: 'black' };
     if (document.getElementById('apple-sign-out-button')) auth.signOutButton = { id: 'apple-sign-out-button', theme: 'black' };
-    CloudKit.configure({ containers: [{ containerIdentifier: cfg.container, apiTokenAuth: auth, environment: cfg.environment }] });
+    CloudKit.configure({ containers: [{ containerIdentifier: cfg.container, apiTokenAuth: auth, environment: cfg.environment }], authTokenStore: tokenStore() });
     container = CloudKit.getDefaultContainer();
     configured = true;
     return container;
+  }
+  // サインインの記憶（ckSession）は localStorage に1つだけ置く（2026-09-06）。
+  //
+  // ■ なぜ: CloudKit JS の既定は Cookie で、path を付けずに書くので「そのページのフォルダ」に付く。
+  //   spot-new.html（/sonomise-site/）と shops/…（/sonomise-site/shops/）で別々にサインインすると
+  //   同じ名前の Cookie が2つ並び、CloudKit JS が書いた値と読んだ値の食い違いで AUTH_PERSIST_ERROR
+  //   （「Could not read or write ckSession」）になって、読むだけの一覧・最近の投票まで全部消える。
+  //   本番1日目に社長の Chrome で実際に起きた。localStorage は origin に1つなので path の問題が無い。
+  // ■ 移行: 古い Cookie が1つだけなら値を写してから消す（サインインは保たれる）。2つ以上なら壊れているので全部消す（読むだけなら動く。書くときはサインインし直し）。
+  function tokenStore() {
+    var key = 'ck.session.' + cfg.container;
+    try {
+      var found = document.cookie.split('; ').filter(function (c) { return c.indexOf(cfg.container + '=') === 0; }).map(function (c) { return c.slice(cfg.container.length + 1); });
+      if (found.length === 1 && !localStorage.getItem(key)) localStorage.setItem(key, found[0]);
+      if (found.length) {
+        var base = location.pathname.replace(/\/[^\/]*$/, '');
+        var paths = ['/', base, base + '/', base.replace(/\/shops$/, ''), base.replace(/\/shops$/, '') + '/'];
+        paths.forEach(function (p) { document.cookie = cfg.container + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=' + p; });
+      }
+    } catch (e) {}
+    return {
+      putToken: function (id, token) { try { if (token == null) localStorage.removeItem(key); else localStorage.setItem(key, token); } catch (e) {} },
+      getToken: function (id) { try { return localStorage.getItem(key); } catch (e) { return null; } }
+    };
   }
   function whenLoaded(cb) { if (window.CloudKit) cb(); else window.addEventListener('cloudkitloaded', cb); }
   function set(u) { user = u || null; listeners.forEach(function (l) { try { l(user); } catch (e) {} }); }
