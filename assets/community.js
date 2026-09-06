@@ -112,10 +112,17 @@
           var t = m.fields && m.fields.text && m.fields.text.value; if (!t) return;
           if (m.fields.kind.value === 'ownerHide') hidden[t] = true; else blocked[t] = true;
         });
+        // [2026-09-06 守り] 別々の3人から通報された投稿は運営を待たずに隠す（アプリの ModerationPolicy.autoHidden と同じ規則）。
+        return query(db, { recordType: 'ContentReport' }).catch(function () { return []; }).then(function (crs) {
+          var by = {};
+          crs.forEach(function (c) { var t = c.fields && c.fields.targetSubmissionID && c.fields.targetSubmissionID.value; var who = c.created && c.created.userRecordName; if (!t || !who) return; (by[t] = by[t] || {})[who] = true; });
+          Object.keys(by).forEach(function (t) { if (Object.keys(by[t]).length >= 3) hidden[t] = true; });
+        }).then(function () {
         return query(db, { recordType: 'Report', filterBy: [
           { fieldName: 'spotID', comparator: 'EQUALS', fieldValue: { value: spotID } },
           { fieldName: 'kind', comparator: 'IN', fieldValue: { value: VOTE_KINDS.concat(['comment', 'officialInfo', 'ownerClose', 'ownerReopen']) } }
         ], sortBy: [{ fieldName: 'createdAt', ascending: false }] }).then(function (records) { settled = true; render(records, hidden, blocked); });
+        });
       }).catch(function () { settled = true; root.innerHTML = ''; });
     } catch (e) { root.innerHTML = ''; }
   }
