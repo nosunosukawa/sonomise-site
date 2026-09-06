@@ -86,6 +86,7 @@ function shell({ title, description, canonical, body, jsonld, extraHead = '' }) 
 <meta property="og:url" content="${canonical}">
 ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld)}</script>` : ''}
 ${extraHead}
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "da30c37073e746159a379341e417854d"}'></script>
 <style>${style}${extra}</style>
 </head>
 <body>
