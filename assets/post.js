@@ -40,6 +40,7 @@
       signedIn = !!u; signout.hidden = !u; refresh();
       if (err) say('いまはサインインできませんでした。アプリからも投票できます。');
       else if (u) say('サインインしました。当てはまるものを選んで「送る」を押してください。');
+      else say('');
     });
     CK.startAuth();
   });
@@ -63,6 +64,9 @@
       setTimeout(function () { location.reload(); }, 1500);
     }).catch(function (err) {
       btn.disabled = false;
+      // サインインの記憶が古くて Apple に断られた（AUTHENTICATION_REQUIRED）ときは、記憶を捨ててサインインし直してもらう（2026-09-07）。
+      // 9/7 に社長の Chrome で発生: 画面は「サインイン済み」なのに送ると「request needs authorization」。
+      if (err && err.ckErrorCode === 'AUTHENTICATION_REQUIRED') { CK.signOut(); say('サインインの期限が切れていました。もう一度「Sign in with Apple ID」を押してから送ってください。'); return; }
       say('送れませんでした（' + ((err && (err.reason || err.message)) || '通信エラー') + '）。時間をおいてもう一度、またはアプリからお願いします。');
     });
   });

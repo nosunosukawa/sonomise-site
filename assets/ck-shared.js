@@ -45,11 +45,24 @@ window.SonomiseCK = (function () {
     var c = ensure();
     if (!c || authStarted) return;
     authStarted = true;
-    function loop(p) {
-      return p.then(function (u) { set(u); return u ? c.whenUserSignsOut() : c.whenUserSignsIn(); }).then(loop)
-        .catch(function () { set(null); listeners.forEach(function (l) { try { l(null, 'error'); } catch (e) {} }); });
+    // 待ち受けの鎖（2026-09-07 作り直し）。
+    // ■ 以前の鎖は `.then(loop)` に「解決した値」（利用者情報や undefined）を渡していたので、
+    //   最初の状態変化の次で必ず TypeError になり、catch で鎖が終わっていた。結果:
+    //   ページを開いた時点で未サインインなら、そのページでサインインしても set(u) が呼ばれず
+    //   「送る」が有効にならない（既にサインイン済みのページだけ動いていた）。
+    //   社長の Chrome で 9/6・9/7 に起きた「コードを送ったのにできなかった」の正体。
+    // ■ いまの鎖: 状態が変わるたびに step(u) を呼ぶ。失敗しても次のサインインを待ち続ける（上限 20 回）。
+    var failures = 0;
+    function step(u) {
+      set(u); if (u) failures = 0;
+      var next = u ? c.whenUserSignsOut().then(function () { return null; }) : c.whenUserSignsIn();
+      return next.then(step, fail);
     }
-    loop(c.setUpAuth());
+    function fail() {
+      set(null); listeners.forEach(function (l) { try { l(null, 'error'); } catch (e) {} });
+      if (++failures <= 20) return c.whenUserSignsIn().then(step, fail);
+    }
+    c.setUpAuth().then(step, fail);
   }
   return {
     db: function () { var c = ensure(); return c ? c.publicCloudDatabase : null; },
@@ -57,6 +70,7 @@ window.SonomiseCK = (function () {
     startAuth: startAuth,
     onAuth: function (cb) { listeners.push(cb); if (configured) cb(user); },
     user: function () { return user; },
+    signOut: function () { try { if (container) container.signOut(); } catch (e) {} },
     // 送る前の共通の型付け（CloudKit JS は型を明示しないと数字が INT64 になることがある）
     str: function (v) { return { value: String(v), type: 'STRING' }; },
     dbl: function (v) { return { value: Number(v), type: 'DOUBLE' }; },
