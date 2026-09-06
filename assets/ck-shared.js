@@ -9,7 +9,8 @@ window.SonomiseCK = (function () {
     var auth = { apiToken: cfg.apiToken, persist: true };
     if (document.getElementById('apple-sign-in-button')) auth.signInButton = { id: 'apple-sign-in-button', theme: 'black' };
     if (document.getElementById('apple-sign-out-button')) auth.signOutButton = { id: 'apple-sign-out-button', theme: 'black' };
-    CloudKit.configure({ containers: [{ containerIdentifier: cfg.container, apiTokenAuth: auth, environment: cfg.environment }], authTokenStore: tokenStore() });
+    // 置き場は services の下に渡す（configure 直下では無視される。cloudkit.js 実読: `u=config.services; l=u.authTokenStore`・2026-09-07）
+    CloudKit.configure({ containers: [{ containerIdentifier: cfg.container, apiTokenAuth: auth, environment: cfg.environment }], services: { authTokenStore: tokenStore() } });
     container = CloudKit.getDefaultContainer();
     configured = true;
     return container;
