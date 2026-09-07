@@ -1,0 +1,2 @@
+/bin/bash: ./verify.sh: No such file or directory
+verify exit=127
